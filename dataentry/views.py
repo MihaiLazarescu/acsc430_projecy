@@ -1,10 +1,9 @@
 from django.conf import settings
 from django.shortcuts import redirect, render
-from . utils import get_all_custom_models
+from . utils import check_csv_errors, get_all_custom_models
 from uploads.models import Upload
-from django.core.management import call_command
 from django.contrib import messages
-
+from .tasks import import_data_task
 
 def import_data(request):
     if request.method == 'POST':
@@ -22,11 +21,14 @@ def import_data(request):
 
 
         try:
-            call_command('importdata', file_path, model_name)
-            messages.success(request, 'Data imported successfully')
+            check_csv_errors(file_path, model_name)
         except Exception as e:
             messages.error(request, str(e))
+            return redirect('import_data')
+
+        import_data_task.delay(file_path, model_name)
         
+        messages.success(request, 'Your data is being imported, once it is done you will be notified.')
 
         
         return redirect('import_data')
