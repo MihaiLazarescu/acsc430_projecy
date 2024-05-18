@@ -1,5 +1,4 @@
 from django.shortcuts import render, redirect
-
 from .tasks import send_email_task
 from .forms import EmailForm
 from django.contrib import messages
