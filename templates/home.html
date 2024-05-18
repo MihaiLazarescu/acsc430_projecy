@@ -3,6 +3,7 @@
     {% block content %}
 
     <div class="container" style="padding: 50px;">
+        {% if user.is_authenticated %}
         <h2 class="text-center">Automate The Boring Stuff With Django</h2>
         <div class="row pt-5">
             <!-- Import data -->
@@ -90,22 +91,25 @@
                 </a>
             </div>
         </div>
+        {% else %}
+
+        <div class="home-info">
+            <h2 class="text-center">Automate the Boring Stuff with Django</h2>
+            <p class="lead text-center tect-muted">
+                6 essential automation tools, from Data Import to Email Tracking System to Stock Market Analysis!
+            </p>
+            <p class="lead text-center tect-muted">
+            Login to get started!
+        </p>
+
+            <div style="display:flex; justify-content: center;">
+                <a href="{% url 'login' %}" class="btn btn-primary">LOGIN</a>
+                &nbsp;<a href="{% url 'register' %}" class="btn btn-success">REGISTER</a>
+            </div>
+        </div>
+
+        {% endif %}
+
     </div>
 
     {% endblock %}
-
-<!-- <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Automate The Boring Stuff With Django</title>
-</head>
-<body>
-    <h3>Home Page</h3>
-    <br>
-    <a href="{% url 'import_data' %}">Import Data</a>
-    <a href="{% url 'export_data' %}">Export Data</a>
-    
-</body>
-</html> -->
